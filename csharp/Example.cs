@@ -4,7 +4,24 @@
 using System.Net.Http.Json;
 using System.Web;
 
+const string apiKey = "frd_YOUR_KEY_HERE";
+
 var client = new HttpClient { BaseAddress = new Uri("https://api.feriados.dev/api/v1/") };
+client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+// ---------------------------------------------------------------------------
+// Registration (only needed once — save the returned key)
+// ---------------------------------------------------------------------------
+// var reg = await new HttpClient().PostAsJsonAsync(
+//     "https://api.feriados.dev/api/v1/auth/register",
+//     new { email = "you@example.com", password = "yourpassword" });
+// var regData = await reg.Content.ReadFromJsonAsync<JsonElement>();
+// var key = regData.GetProperty("data").GetProperty("apiKey").GetProperty("key").GetString();
+// // Save key — it is shown only once.
+
+// ---------------------------------------------------------------------------
+// Data requests
+// ---------------------------------------------------------------------------
 
 // All national holidays in 2026
 var national = await client.GetFromJsonAsync<object>("holidays?year=2026&type=national");

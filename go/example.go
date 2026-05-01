@@ -9,7 +9,12 @@ import (
 	"net/url"
 )
 
-const baseURL = "https://api.feriados.dev/api/v1"
+const (
+	baseURL = "https://api.feriados.dev/api/v1"
+	apiKey  = "frd_YOUR_KEY_HERE"
+)
+
+var httpClient = &http.Client{}
 
 func apiGet(path string, params map[string]string) (map[string]any, error) {
 	u, err := url.Parse(baseURL + path)
@@ -23,11 +28,21 @@ func apiGet(path string, params map[string]string) (map[string]any, error) {
 	}
 	u.RawQuery = q.Encode()
 
-	resp, err := http.Get(u.String())
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("X-API-Key", apiKey)
+
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("API error: HTTP %d", resp.StatusCode)
+	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

@@ -2,6 +2,36 @@
 // feriados.dev API — PHP examples
 
 define('BASE_URL', 'https://api.feriados.dev/api/v1');
+define('API_KEY', 'frd_YOUR_KEY_HERE');
+
+// ---------------------------------------------------------------------------
+// HTTP helpers
+// ---------------------------------------------------------------------------
+
+function apiPost(string $path, array $body): array
+{
+    $url  = BASE_URL . $path;
+    $json = json_encode($body);
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Accept: application/json',
+    ]);
+
+    $response = curl_exec($ch);
+    $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($status >= 400) {
+        throw new RuntimeException("API error: HTTP $status for $url");
+    }
+
+    return json_decode($response, true);
+}
 
 function apiGet(string $path, array $params = []): array
 {
@@ -12,7 +42,10 @@ function apiGet(string $path, array $params = []): array
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Accept: application/json',
+        'X-API-Key: ' . API_KEY,
+    ]);
 
     $response = curl_exec($ch);
     $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -24,6 +57,16 @@ function apiGet(string $path, array $params = []): array
 
     return json_decode($response, true);
 }
+
+// ---------------------------------------------------------------------------
+// Registration (only needed once — save the returned key)
+// ---------------------------------------------------------------------------
+// $result = apiPost('/auth/register', ['email' => 'you@example.com', 'password' => 'yourpassword']);
+// $apiKey = $result['data']['apiKey']['key']; // save this — shown only once
+
+// ---------------------------------------------------------------------------
+// Data requests
+// ---------------------------------------------------------------------------
 
 // All national holidays in 2026
 $national = apiGet('/holidays', ['year' => 2026, 'type' => 'national']);

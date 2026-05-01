@@ -1,21 +1,41 @@
 # feriados.dev API — Ruby examples
-# gem install httparty (optional, also works with net/http)
 
 require "net/http"
 require "uri"
 require "json"
 
-BASE = "https://api.feriados.dev/api/v1"
+BASE   = "https://api.feriados.dev/api/v1"
+API_KEY = "frd_YOUR_KEY_HERE"
+
+# ---------------------------------------------------------------------------
+# HTTP helpers
+# ---------------------------------------------------------------------------
 
 def api_get(path, params = {})
   uri = URI("#{BASE}#{path}")
   uri.query = URI.encode_www_form(params) unless params.empty?
 
-  response = Net::HTTP.get_response(uri)
+  req = Net::HTTP::Get.new(uri)
+  req["X-API-Key"] = API_KEY
+
+  response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
   raise "API error: #{response.code}" unless response.is_a?(Net::HTTPSuccess)
 
   JSON.parse(response.body)
 end
+
+# Registration (only needed once — save the returned key)
+# def register(email, password)
+#   uri = URI("#{BASE}/auth/register")
+#   req = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
+#   req.body = { email: email, password: password }.to_json
+#   response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
+#   JSON.parse(response.body).dig("data", "apiKey", "key") # save — shown only once
+# end
+
+# ---------------------------------------------------------------------------
+# Data requests
+# ---------------------------------------------------------------------------
 
 # All national holidays in 2026
 national = api_get("/holidays", year: 2026, type: "national")

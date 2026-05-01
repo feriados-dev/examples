@@ -12,8 +12,13 @@ import java.util.stream.Collectors;
 
 public class Example {
 
-    private static final String BASE = "https://api.feriados.dev/api/v1";
+    private static final String BASE   = "https://api.feriados.dev/api/v1";
+    private static final String API_KEY = "frd_YOUR_KEY_HERE";
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
+
+    // -----------------------------------------------------------------------
+    // HTTP helpers
+    // -----------------------------------------------------------------------
 
     public static String apiGet(String path, Map<String, String> params) throws Exception {
         String query = params.entrySet().stream()
@@ -26,6 +31,7 @@ public class Example {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Accept", "application/json")
+                .header("X-API-Key", API_KEY)
                 .GET()
                 .build();
 
@@ -37,6 +43,10 @@ public class Example {
 
         return response.body();
     }
+
+    // -----------------------------------------------------------------------
+    // Usage
+    // -----------------------------------------------------------------------
 
     public static void main(String[] args) throws Exception {
         // All national holidays in 2026
