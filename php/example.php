@@ -1,7 +1,7 @@
 <?php
 // feriados.dev API — PHP examples
 
-define('BASE_URL', 'https://api.feriados.dev/api/v1');
+define('BASE_URL', 'https://api.feriados.dev/v1');
 define('API_KEY', 'frd_YOUR_KEY_HERE');
 
 // ---------------------------------------------------------------------------

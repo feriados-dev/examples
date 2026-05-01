@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	baseURL = "https://api.feriados.dev/api/v1"
+	baseURL = "https://api.feriados.dev/v1"
 	apiKey  = "frd_YOUR_KEY_HERE"
 )
 

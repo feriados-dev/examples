@@ -1,6 +1,6 @@
 // feriados.dev API — JavaScript (fetch) examples
 
-const BASE = "https://api.feriados.dev/api/v1";
+const BASE = "https://api.feriados.dev/v1";
 
 // ---------------------------------------------------------------------------
 // Authentication helpers

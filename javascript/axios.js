@@ -9,7 +9,7 @@ const API_KEY = "frd_YOUR_KEY_HERE";
 // Authenticated client for data endpoints
 // ---------------------------------------------------------------------------
 const api = axios.create({
-  baseURL: "https://api.feriados.dev/api/v1",
+  baseURL: "https://api.feriados.dev/v1",
   headers: { "X-API-Key": API_KEY },
 });
 
@@ -17,7 +17,7 @@ const api = axios.create({
 // Registration (only needed once — save the returned key)
 // ---------------------------------------------------------------------------
 async function register(email, password, name) {
-  const { data } = await axios.post("https://api.feriados.dev/api/v1/auth/register", {
+  const { data } = await axios.post("https://api.feriados.dev/v1/auth/register", {
     email,
     password,
     name,

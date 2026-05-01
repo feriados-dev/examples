@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class Example {
 
-    private static final String BASE   = "https://api.feriados.dev/api/v1";
+    private static final String BASE   = "https://api.feriados.dev/v1";
     private static final String API_KEY = "frd_YOUR_KEY_HERE";
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
 

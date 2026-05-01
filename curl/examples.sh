@@ -1,7 +1,7 @@
 #!/bin/bash
 # feriados.dev API — cURL examples
 
-BASE="https://api.feriados.dev/api/v1"
+BASE="https://api.feriados.dev/v1"
 
 # ---------------------------------------------------------------------------
 # 1. Register and get your API key (only needed once)

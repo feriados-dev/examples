@@ -9,7 +9,7 @@ Examples for using the [feriados.dev](https://feriados.dev) API — a REST API f
 All data endpoints require an API key in the `X-API-Key` header. To get one, create a free account:
 
 ```bash
-curl -X POST https://api.feriados.dev/api/v1/auth/register \
+curl -X POST https://api.feriados.dev/v1/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email": "you@example.com", "password": "yourpassword"}'
 ```

@@ -4,7 +4,7 @@ require "net/http"
 require "uri"
 require "json"
 
-BASE   = "https://api.feriados.dev/api/v1"
+BASE   = "https://api.feriados.dev/v1"
 API_KEY = "frd_YOUR_KEY_HERE"
 
 # ---------------------------------------------------------------------------
