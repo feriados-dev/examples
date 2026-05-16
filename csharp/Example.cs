@@ -39,6 +39,18 @@ Console.WriteLine($"Minas Gerais holidays: {mg}");
 var next = await client.GetFromJsonAsync<object>("holidays/next?location=PR-curitiba&limit=5");
 Console.WriteLine($"Next holidays in Curitiba: {next}");
 
+// Check whether a date is a holiday
+var holidayCheck = await client.GetFromJsonAsync<object>("holidays/is?date=2026-12-10&location=PR-londrina");
+Console.WriteLine($"Holiday check: {holidayCheck}");
+
+// Count business days
+var businessDays = await client.GetFromJsonAsync<object>("business-days?from=2026-12-01&to=2026-12-31&location=PR-londrina");
+Console.WriteLine($"Business days: {businessDays}");
+
+// Marketing dates require a paid plan
+// var marketingDates = await client.GetFromJsonAsync<object>("marketing-dates?year=2026&category=ecommerce");
+// Console.WriteLine($"Marketing dates: {marketingDates}");
+
 // Holidays in June 2026
 var june = await client.GetFromJsonAsync<object>("holidays/range?startDate=2026-06-01&endDate=2026-06-30");
 Console.WriteLine($"June 2026 holidays: {june}");

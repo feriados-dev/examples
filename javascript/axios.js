@@ -26,6 +26,14 @@ async function register(email, password, name) {
   return data.data.apiKey.key;
 }
 
+async function login(email, password) {
+  const { data } = await axios.post("https://api.feriados.dev/v1/auth/login", {
+    email,
+    password,
+  });
+  return data.data.token;
+}
+
 // ---------------------------------------------------------------------------
 // Data requests
 // ---------------------------------------------------------------------------
@@ -60,8 +68,55 @@ const { data: range } = await api.get("/holidays/range", {
 });
 console.log("June 2026 holidays:", range);
 
+// Check if a date is a holiday
+const { data: holidayCheck } = await api.get("/holidays/is", {
+  params: { date: "2026-12-10", location: "PR-londrina" },
+});
+console.log("Holiday check:", holidayCheck);
+
+// Count business days
+const { data: businessDays } = await api.get("/business-days", {
+  params: { from: "2026-12-01", to: "2026-12-31", location: "PR-londrina" },
+});
+console.log("Business days:", businessDays);
+
+// Marketing dates require a paid plan
+// const { data: marketingDates } = await api.get("/marketing-dates", {
+//   params: { year: 2026, category: "ecommerce" },
+// });
+// console.log("Marketing dates:", marketingDates);
+
 // Search for a city
 const { data: search } = await api.get("/locations/search", {
   params: { q: "porto alegre" },
 });
 console.log("Search results:", search);
+
+// Public metadata
+const { data: dataStatus } = await axios.get("https://api.feriados.dev/v1/data/status");
+console.log("Data status:", dataStatus);
+
+// ---------------------------------------------------------------------------
+// Premium webhooks — API key or JWT
+// ---------------------------------------------------------------------------
+
+// const token = await login("you@example.com", "yourpassword");
+// const dashboard = axios.create({
+//   baseURL: "https://api.feriados.dev/v1",
+//   headers: { Authorization: `Bearer ${token}` },
+// });
+//
+// const { data: createdWebhook } = await dashboard.post("/webhooks", {
+//   url: "https://example.com/webhook",
+//   daysBefore: 1,
+//   locationCode: "PR-londrina",
+// });
+// console.log("Save signingSecret now:", createdWebhook.data.subscription.signingSecret);
+//
+// const { data: webhooks } = await dashboard.get("/webhooks");
+// console.log("Webhooks:", webhooks);
+//
+// const { data: deliveries } = await dashboard.get("/webhooks/deliveries", {
+//   params: { subscriptionId: "WEBHOOK_UUID_HERE", page: 1, limit: 50 },
+// });
+// console.log("Webhook deliveries:", deliveries);

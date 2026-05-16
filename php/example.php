@@ -88,6 +88,24 @@ $next = apiGet('/holidays/next', ['location' => 'BA-salvador', 'limit' => 5]);
 echo "\nNext holidays in Salvador:\n";
 print_r($next);
 
+// Check whether a date is a holiday
+$holidayCheck = apiGet('/holidays/is', ['date' => '2026-12-10', 'location' => 'PR-londrina']);
+echo "\nHoliday check:\n";
+print_r($holidayCheck);
+
+// Count business days in a range
+$businessDays = apiGet('/business-days', [
+    'from' => '2026-12-01',
+    'to' => '2026-12-31',
+    'location' => 'PR-londrina',
+]);
+echo "\nBusiness days:\n";
+print_r($businessDays);
+
+// Marketing dates require a paid plan
+// $marketingDates = apiGet('/marketing-dates', ['year' => 2026, 'category' => 'ecommerce']);
+// print_r($marketingDates);
+
 // Search for a city
 $search = apiGet('/locations/search', ['q' => 'recife']);
 echo "\nSearch results for 'recife':\n";

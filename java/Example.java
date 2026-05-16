@@ -65,6 +65,23 @@ public class Example {
         String next = apiGet("/holidays/next", Map.of("location", "AM-manaus", "limit", "5"));
         System.out.println("Next holidays in Manaus: " + next);
 
+        // Check whether a date is a holiday
+        String holidayCheck = apiGet("/holidays/is", Map.of(
+                "date", "2026-12-10",
+                "location", "PR-londrina"));
+        System.out.println("Holiday check: " + holidayCheck);
+
+        // Count business days
+        String businessDays = apiGet("/business-days", Map.of(
+                "from", "2026-12-01",
+                "to", "2026-12-31",
+                "location", "PR-londrina"));
+        System.out.println("Business days: " + businessDays);
+
+        // Marketing dates require a paid plan
+        // String marketingDates = apiGet("/marketing-dates", Map.of("year", "2026", "category", "ecommerce"));
+        // System.out.println("Marketing dates: " + marketingDates);
+
         // Search for a city
         String search = apiGet("/locations/search", Map.of("q", "salvador"));
         System.out.println("Search results: " + search);

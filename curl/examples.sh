@@ -36,9 +36,43 @@ curl -H "X-API-Key: $API_KEY" \
 curl -H "X-API-Key: $API_KEY" \
   "$BASE/holidays/range?startDate=2026-06-01&endDate=2026-06-30"
 
+# Check whether a date is a holiday in Londrina
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/holidays/is?date=2026-12-10&location=PR-londrina"
+
+# Compare holidays between Curitiba and Londrina
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/holidays/compare?locations=PR-curitiba,PR-londrina&year=2026"
+
 # Full year calendar for 2026
 curl -H "X-API-Key: $API_KEY" \
   "$BASE/holidays/year/2026"
+
+# Public iCalendar feed for a location
+curl "$BASE/holidays/ical?location=PR-londrina&year=2026"
+
+# Count business days in a range
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/business-days?from=2026-12-01&to=2026-12-31&location=PR-londrina"
+
+# Add 10 business days
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/business-days/add?date=2026-12-01&days=10&location=PR-londrina"
+
+# Find the next business day
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/business-days/next?date=2026-12-10&location=PR-londrina"
+
+# Check whether a date is a business day
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/business-days/is?date=2026-12-10&location=PR-londrina"
+
+# Marketing dates require a paid plan
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/marketing-dates?year=2026&category=ecommerce"
+
+curl -H "X-API-Key: $API_KEY" \
+  "$BASE/marketing-dates/next?limit=5"
 
 # Search for a city by name to find its code
 curl -H "X-API-Key: $API_KEY" \
@@ -65,6 +99,9 @@ TOKEN=$(curl -s -X POST "$BASE/auth/login" \
 # List your API keys
 curl -H "Authorization: Bearer $TOKEN" "$BASE/auth/keys"
 
+# Current-month usage and quota
+curl -H "Authorization: Bearer $TOKEN" "$BASE/auth/usage/current-month"
+
 # Create a new key
 curl -X POST "$BASE/auth/keys" \
   -H "Authorization: Bearer $TOKEN" \
@@ -74,3 +111,46 @@ curl -X POST "$BASE/auth/keys" \
 # Revoke a key
 curl -X DELETE "$BASE/auth/keys/KEY_UUID_HERE" \
   -H "Authorization: Bearer $TOKEN"
+
+# ---------------------------------------------------------------------------
+# Billing self-service (JWT)
+# ---------------------------------------------------------------------------
+
+# Create a Stripe checkout session
+curl -X POST "$BASE/billing/checkout" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"plan": "basic"}'
+
+# Create a Stripe billing portal session
+curl -X POST "$BASE/billing/portal" \
+  -H "Authorization: Bearer $TOKEN"
+
+# ---------------------------------------------------------------------------
+# Premium webhooks (API key or JWT)
+# ---------------------------------------------------------------------------
+
+# Create a pre-holiday webhook. Save signingSecret from the response.
+curl -X POST "$BASE/webhooks" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com/webhook", "daysBefore": 1, "locationCode": "PR-londrina"}'
+
+# List webhooks
+curl -H "Authorization: Bearer $TOKEN" "$BASE/webhooks"
+
+# Delivery history
+curl -H "Authorization: Bearer $TOKEN" \
+  "$BASE/webhooks/deliveries?subscriptionId=WEBHOOK_UUID_HERE&page=1&limit=50"
+
+# Deactivate a webhook
+curl -X DELETE "$BASE/webhooks/WEBHOOK_UUID_HERE" \
+  -H "Authorization: Bearer $TOKEN"
+
+# ---------------------------------------------------------------------------
+# Public metadata
+# ---------------------------------------------------------------------------
+
+curl "$BASE/data/status"
+curl "$BASE/data/changelog"
+curl "$BASE/changelog"

@@ -53,6 +53,18 @@ puts "\nPernambuco holidays: #{pe}"
 next_holidays = api_get("/holidays/next", location: "PE-recife", limit: 5)
 puts "\nNext holidays in Recife: #{next_holidays}"
 
+# Check whether a date is a holiday
+holiday_check = api_get("/holidays/is", date: "2026-12-10", location: "PR-londrina")
+puts "\nHoliday check: #{holiday_check}"
+
+# Count business days
+business_days = api_get("/business-days", from: "2026-12-01", to: "2026-12-31", location: "PR-londrina")
+puts "\nBusiness days: #{business_days}"
+
+# Marketing dates require a paid plan
+# marketing_dates = api_get("/marketing-dates", year: 2026, category: "ecommerce")
+# puts "\nMarketing dates: #{marketing_dates}"
+
 # Search for a city
 results = api_get("/locations/search", q: "brasilia")
 puts "\nSearch results: #{results}"

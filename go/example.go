@@ -98,6 +98,33 @@ func main() {
 	}
 	fmt.Println("Next holidays in Porto Alegre:", next)
 
+	// Check whether a date is a holiday
+	holidayCheck, err := apiGet("/holidays/is", map[string]string{
+		"date":     "2026-12-10",
+		"location": "PR-londrina",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Holiday check:", holidayCheck)
+
+	// Count business days
+	businessDays, err := apiGet("/business-days", map[string]string{
+		"from":     "2026-12-01",
+		"to":       "2026-12-31",
+		"location": "PR-londrina",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Business days:", businessDays)
+
+	// Marketing dates require a paid plan
+	// marketingDates, err := apiGet("/marketing-dates", map[string]string{
+	// 	"year": "2026",
+	// 	"category": "ecommerce",
+	// })
+
 	// Search for a city
 	search, err := apiGet("/locations/search", map[string]string{
 		"q": "fortaleza",
