@@ -164,11 +164,36 @@ X-Feriados-Signature: sha256=<hmac>
 
 The signature is HMAC-SHA256 over `<timestamp>.<raw_json_body>` using the `signingSecret`.
 
+## MCP
+
+feriados.dev also provides an MCP server for agents and MCP-compatible clients.
+
+Local stdio server:
+
+```bash
+npx -y @feriados-dev/mcp-server
+```
+
+The local MCP server uses the same API key:
+
+```bash
+FERIADOS_API_KEY=frd_YOUR_KEY_HERE
+```
+
+Remote MCP endpoint:
+
+```text
+https://mcp.feriados.dev/
+```
+
+For a programmatic JavaScript client example, see [JavaScript MCP client](./javascript/mcp-client.js).
+
 ## Examples
 
 - [cURL](./curl/examples.sh)
 - [JavaScript (fetch)](./javascript/fetch.js)
 - [JavaScript (axios)](./javascript/axios.js)
+- [JavaScript MCP client](./javascript/mcp-client.js)
 - [JavaScript webhook receiver](./javascript/webhook-receiver.js)
 - [Python](./python/example.py)
 - [Python webhook receiver](./python/webhook_receiver.py)
